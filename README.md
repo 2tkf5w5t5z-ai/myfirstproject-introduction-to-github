@@ -1,16 +1,30 @@
-# Introduction to GitHub
+# Medical Conversation Tokenizer
 
-<img src="https://octodex.github.com/images/Professortocat_v2.png" align="right" height="200px" />
+A lightweight Python tool to parse senior-doctor conversation transcripts. It identifies speakers, splits text into sentences/tokens, and flags medical terms.
 
-Hey 2tkf5w5t5z-ai!
+## ✨ Features
+- **Speaker Detection**: Identifies roles (Doctor, Senior, Patient, etc.).
+- **Tokenization**: Splits text into sentences and clean word tokens.
+- **Medical Flagging**: Highlights single-word terms (e.g., `fever`) and phrases (e.g., `blood pressure`).
+- **Zero Dependencies**: Uses only the Python standard library.
 
-Mona here. I'm done preparing your exercise. Hope you enjoy! 💚
+## 🚀 Usage
 
-Remember, it's self-paced so feel free to take a break! ☕️
+```python
+from tokenizer import tokenize_conversation
 
-[![](https://img.shields.io/badge/Go%20to%20Exercise-%E2%86%92-1f883d?style=for-the-badge&logo=github&labelColor=197935)](https://github.com/2tkf5w5t5z-ai/myfirstproject-introduction-to-github/issues/2)
+text = """
+Doctor: How is your headache?
+Senior: It hurts, and I feel dizzy.
+Doctor: Let's check your blood pressure.
+"""
 
----
-
-&copy; 2025 GitHub &bull; [Code of Conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct/code_of_conduct.md) &bull; [MIT License](https://gh.io/mit)
-
+for turn in tokenize_conversation(text):
+    print(f"[{turn['speaker']}] {turn['utterance']}")
+    
+    # Show detected medical keywords
+    terms = [t for t, is_med in turn['medical'].items() if is_med]
+    phrases = turn['medical_phrases']
+    
+    if terms: print(f"  🔍 Terms: {', '.join(terms)}")
+    if phrases: print(f"  💊 Phrases: {', '.join(phrases)}")
